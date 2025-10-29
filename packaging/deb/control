@@ -1,0 +1,7 @@
+Package: t3unlock-rs
+Version: 0.1.0
+Section: utils
+Priority: optional
+Architecture: amd64
+Maintainer: You <you@example.com>
+Description: Unlock Samsung Portable SSD T3 (Rust)

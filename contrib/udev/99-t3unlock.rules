@@ -1,0 +1,3 @@
+# Grant plugdev (or your distro's equivalent) access to Samsung Portable SSD T3
+# Adjust idVendor/idProduct after verifying with `lsusb`.
+SUBSYSTEM=="usb", ATTR{idVendor}=="04e8", ATTR{idProduct}=="61f1", MODE="0660", GROUP="plugdev"
