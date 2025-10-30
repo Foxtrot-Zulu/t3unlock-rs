@@ -75,9 +75,35 @@ cargo test
 
 See `.github/workflows/ci.yml` for lint/build/test and artifact upload (skeleton).
 
-## Protocol TODO
+## How it works (T3)
 
-See `docs/protocol.md`. Replace placeholder values with those from the model repository after inspection, or by observing control transfers on Linux (e.g., usbmon).
+This tool talks to the Samsung Portable SSD **T3** over **bulk endpoints** (not control transfers):
+
+- Interface: `0`
+- Endpoints:
+  - OUT (host → device): `0x02`
+  - IN  (device → host): `0x81`
+- Sequence (based on a known-good Linux unlocker):
+  1. **OUT**: 31-byte `unlock` packet
+  2. **OUT**: 512-byte `password` packet (ASCII/UTF-8, NUL-terminated/zero-padded)
+  3. **IN**:  512-byte `return` → byte `9 == 0x02` means **failure**
+  4. **OUT**: 31-byte `relink` packet
+  5. **IN**:  512-byte `return` → byte `9 == 0x02` means **failure**
+
+### Defaults
+
+- VID: `0x04e8` (Samsung)
+- PID (T3 locked): **`0x61f4`**  
+  Override with CLI (`--vid/--pid`) or env (`T3UNLOCK_VID/T3UNLOCK_PID`).
+
+### Permissions (non-root)
+
+Install the udev rule and replug the drive:
+
+sudo install -D -m 0644 contrib/udev/99-t3unlock.rules /etc/udev/rules.d/99-t3unlock.rules
+sudo udevadm control --reload-rules && sudo udevadm trigger
+
+Replug the drive; ensure you're in the plugdev group
 
 ## Verification checklist (manual, on Linux)
 
