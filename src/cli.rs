@@ -1,4 +1,4 @@
-use clap::{Parser, Subcommand, ValueEnum};
+use clap::{Parser, Subcommand, ValueEnum, CommandFactory};
 use anyhow::Result;
 use std::path::PathBuf;
 

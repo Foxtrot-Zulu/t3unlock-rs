@@ -3,7 +3,7 @@
 //! Replace the placeholder request IDs and frame layouts with those observed
 //! in the reference implementation or reverse-engineered from the device.
 
-use crate::errors::{Result as UsbResult, UsbError};
+use crate::errors::UsbError;
 use rusb::{DeviceHandle, GlobalContext};
 use std::time::Duration;
 
