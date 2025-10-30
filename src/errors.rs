@@ -1,23 +1,17 @@
-#[allow(dead_code)]
 use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum UsbError {
     #[error("USB device not found")]
     NotFound,
-    #[error("Access denied (udev permissions?)")]
+    #[error("Access denied (permissions)")]
     AccessDenied,
-    #[error("Device is busy")]
+    #[error("Device busy")]
     Busy,
-    #[error("I/O error")]
-    Io,
     #[error("Timeout")]
     Timeout,
-    #[error("Protocol mismatch or unsupported device")]
-    Protocol,
-    #[error("Bad password")]
-    BadPassword,
+    #[error("I/O error")]
+    Io,
     #[error("{0}")]
     Other(String),
 }
-
