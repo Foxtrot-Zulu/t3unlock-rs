@@ -13,7 +13,7 @@ sudo apt-get install -y build-essential pkg-config libusb-1.0-0-dev
 # build
 cargo build --release
 
-# show status (defaults to Samsung VID=04e8, PID=61f1 — override if needed)
+# show status (defaults to Samsung VID=04e8, PID=61f4 — override if needed)
 ./target/release/t3unlock status
 
 # simulate unlock (no USB I/O)
@@ -46,7 +46,7 @@ On some distros you may need to add your user to `plugdev` (or equivalent).
 ## Configuration
 
 - Override USB IDs via env:
-  - `T3UNLOCK_VID=04e8 T3UNLOCK_PID=61f1`
+  - `T3UNLOCK_VID=04e8 T3UNLOCK_PID=61f3`
 - Adjust timeouts with `--timeout-ms` or env `T3UNLOCK_TIMEOUT_MS` (coming soon).
 
 ## Security notes
@@ -75,9 +75,36 @@ cargo test
 
 See `.github/workflows/ci.yml` for lint/build/test and artifact upload (skeleton).
 
-## Protocol TODO
+## How it works (T3)
 
-See `docs/protocol.md`. Replace placeholder values with those from the model repository after inspection, or by observing control transfers on Linux (e.g., usbmon).
+This tool talks to the Samsung Portable SSD **T3** over **bulk endpoints** (not control transfers):
+
+- Interface: `0`
+- Endpoints:
+  - OUT (host → device): `0x02`
+  - IN  (device → host): `0x81`
+- Sequence:
+  1. **OUT**: 31-byte `unlock` packet
+  2. **OUT**: 512-byte `password` packet (ASCII/UTF-8, NUL-terminated/zero-padded)
+  3. **IN**:  512-byte `return` → byte `9 == 0x02` means **failure**
+  4. **OUT**: 31-byte `relink` packet
+  5. **IN**:  512-byte `return` → byte `9 == 0x02` means **failure**
+
+### Defaults
+
+- VID: `0x04e8` (Samsung)
+- PID (T3 locked): **`0x61f4`**  
+  Override with CLI (`--vid/--pid`) or env (`T3UNLOCK_VID/T3UNLOCK_PID`).
+
+### Permissions (non-root)
+
+Install the udev rule and replug the drive:
+
+```bash
+sudo install -D -m 0644 contrib/udev/99-t3unlock.rules /etc/udev/rules.d/99-t3unlock.rules
+sudo udevadm control --reload-rules && sudo udevadm trigger
+# replug the drive; ensure you're in the plugdev group
+
 
 ## Verification checklist (manual, on Linux)
 

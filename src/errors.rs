@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -20,4 +21,3 @@ pub enum UsbError {
     Other(String),
 }
 
-pub type Result<T> = std::result::Result<T, UsbError>;
