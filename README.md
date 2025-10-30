@@ -112,5 +112,3 @@ Replug the drive; ensure you're in the plugdev group
 - [ ] Install udev rule; reconnection works without sudo.
 - [ ] `t3unlock unlock --dry-run` logs the intended sequence.
 - [ ] With correct constants in `usb/proto.rs`, `unlock` succeeds with the right password.
-```
-
