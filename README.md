@@ -2,8 +2,6 @@
 
 Linux-first Rust CLI to unlock Samsung Portable SSD **T3** drives.
 
-> ⚠️ The USB protocol constants are placeholders until verified against a real device and/or the original Java reference. Dry-run mode lets you exercise the flow safely.
-
 ## Quick start
 
 ```bash
