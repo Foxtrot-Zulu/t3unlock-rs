@@ -1,8 +1,8 @@
-# t3unlock-rs (scaffold)
+# t3unlock-rs 
 
 Linux-first Rust CLI to unlock Samsung Portable SSD **T3** drives.
 
-> ⚠️ This is a **scaffold**. The USB protocol constants are placeholders until verified against a real device and/or the original Java reference. Dry-run mode lets you exercise the flow safely.
+> ⚠️ The USB protocol constants are placeholders until verified against a real device and/or the original Java reference. Dry-run mode lets you exercise the flow safely.
 
 ## Quick start
 
@@ -104,7 +104,7 @@ Install the udev rule and replug the drive:
 sudo install -D -m 0644 contrib/udev/99-t3unlock.rules /etc/udev/rules.d/99-t3unlock.rules
 sudo udevadm control --reload-rules && sudo udevadm trigger
 # replug the drive; ensure you're in the plugdev group
-
+```
 
 ## Verification checklist (manual, on Linux)
 
@@ -113,5 +113,3 @@ sudo udevadm control --reload-rules && sudo udevadm trigger
 - [ ] Install udev rule; reconnection works without sudo.
 - [ ] `t3unlock unlock --dry-run` logs the intended sequence.
 - [ ] With correct constants in `usb/proto.rs`, `unlock` succeeds with the right password.
-```
-
